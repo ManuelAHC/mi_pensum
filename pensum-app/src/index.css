@@ -30,3 +30,45 @@ html.dark body {
   background: radial-gradient(circle at top, #0b1220 0%, #111827 45%, #020617 100%);
   color: #e2e8f0;
 }
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 280ms ease-out both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 220ms ease-out both;
+}
+
+.stagger-item {
+  animation: fadeUp 260ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-in,
+  .stagger-item {
+    animation: none !important;
+  }
+}
