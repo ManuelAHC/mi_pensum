@@ -65,7 +65,7 @@ function App() {
           semesters.reduce((acc, semester) => {
             acc[semester.semestre] = true;
             return acc;
-          }, {})
+          }, {}),
         );
       } catch (fetchError) {
         if (isMounted) {
@@ -101,7 +101,8 @@ function App() {
       }
     }
 
-    const percentage = totalCredits === 0 ? 0 : (completedCredits / totalCredits) * 100;
+    const percentage =
+      totalCredits === 0 ? 0 : (completedCredits / totalCredits) * 100;
 
     return {
       totalCredits,
@@ -141,7 +142,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-blue-300">
+    <div className="min-h-screen">
       <div className="flex min-h-screen">
         <Header
           isCollapsed={isSidebarCollapsed}
@@ -150,17 +151,26 @@ function App() {
           onNavigateProgress={handleNavigateProgress}
         />
 
-        <div className="flex min-w-0 flex-1 flex-col lg:px-4">
-          <header className="flex items-center gap-3 bg-white px-4 py-4 shadow-md lg:hidden">
-            <div className="h-8 w-8 rounded-full bg-blue-500" />
-            <h1 className="text-lg font-bold text-gray-800">Mi Pensum</h1>
+        <div className="flex min-w-0 flex-1 flex-col">
+          <header className="border-b border-slate-200 bg-white/80 px-4 py-4 shadow-sm backdrop-blur lg:hidden">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-100 text-sm font-bold text-sky-700">
+                M
+              </div>
+              <div>
+                <h1 className="text-base font-bold text-slate-900">
+                  Mi Pensum
+                </h1>
+                <p className="text-xs text-slate-500">Panel academico</p>
+              </div>
+            </div>
           </header>
 
-          <div className="flex flex-1 items-start justify-center gap-8 px-4 py-6 md:px-8">
-            <main id="pensum-section" className="w-full max-w-3xl scroll-mt-4">
-              <div id="progress-mobile" className="scroll-mt-4">
+          <div className="mx-auto flex w-full max-w-[1500px] flex-1 items-start gap-8 px-4 py-6 md:px-8 lg:py-8">
+            <main id="pensum-section" className="w-full max-w-4xl scroll-mt-6">
+              <div id="progress-mobile" className="scroll-mt-6">
                 <PensumSelectorCard
-                  className="mb-6 lg:hidden"
+                  className="mb-4 lg:hidden"
                   value={selectedPensum}
                   options={PENSUM_OPTIONS}
                   onChange={setSelectedPensum}
@@ -168,17 +178,36 @@ function App() {
                 <ProgressCard className="mb-6 lg:hidden" totals={totals} />
               </div>
 
-              <h2 className="mb-4 text-2xl font-bold text-gray-800">Pensum Academico</h2>
+              <section className="mb-6 rounded-2xl border border-slate-200/80 bg-white/85 p-6 shadow-sm backdrop-blur">
+                <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  Resumen
+                </p>
+                <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
+                  <h2 className="text-2xl font-black tracking-tight text-slate-900 md:text-3xl">
+                    Pensum académico
+                  </h2>
+                  <span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-700">
+                    {Math.round(totals.percentage)}% completado
+                  </span>
+                </div>
+              </section>
 
-              {isLoading && <p className="rounded-lg bg-white p-4 shadow">Cargando pensum...</p>}
+              {isLoading && (
+                <p className="rounded-2xl border border-slate-200 bg-white p-4 text-slate-700 shadow-sm">
+                  Cargando pensum...
+                </p>
+              )}
               {!isLoading && error && (
-                <p className="rounded-lg bg-red-100 p-4 text-red-700 shadow">{error}</p>
+                <p className="rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700 shadow-sm">
+                  {error}
+                </p>
               )}
 
               {!isLoading && !error && (
                 <div className="space-y-4">
                   {pensumData.map((semester) => {
-                    const isExpanded = expandedSemesters[semester.semestre] ?? true;
+                    const isExpanded =
+                      expandedSemesters[semester.semestre] ?? true;
 
                     return (
                       <SemesterSection
@@ -196,7 +225,10 @@ function App() {
               )}
             </main>
 
-            <div id="progress-desktop" className="sticky top-4 hidden scroll-mt-4 flex-col gap-4 lg:flex">
+            <div
+              id="progress-desktop"
+              className="sticky top-6 hidden scroll-mt-6 flex-col gap-4 lg:flex"
+            >
               <PensumSelectorCard
                 className="w-80"
                 value={selectedPensum}

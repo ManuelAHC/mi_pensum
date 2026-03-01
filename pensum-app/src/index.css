@@ -4,7 +4,19 @@
   font-family: "Lexend", "Noto Sans", system-ui, sans-serif;
 }
 
-body {
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
   margin: 0;
   min-width: 320px;
+  min-height: 100%;
+}
+
+body {
+  background: radial-gradient(circle at top, #dbeafe 0%, #f8fafc 45%, #eef2ff 100%);
+  color: #0f172a;
 }
