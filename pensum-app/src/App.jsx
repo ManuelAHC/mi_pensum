@@ -344,7 +344,18 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<LandingPage isDark={isDark} onToggleTheme={handleToggleTheme} />} />
+      <Route
+        path="/"
+        element={
+          <LandingPage
+            isDark={isDark}
+            onToggleTheme={handleToggleTheme}
+            selectedPensum={selectedPensum}
+            onSelectPensum={setSelectedPensum}
+            pensumOptions={PENSUM_OPTIONS}
+          />
+        }
+      />
       <Route
         path="/dashboard"
         element={

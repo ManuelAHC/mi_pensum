@@ -1,5 +1,6 @@
 ﻿import {
   ArrowRight,
+  BookOpen,
   CheckCircle2,
   GraduationCap,
   Moon,
@@ -10,7 +11,13 @@
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-function LandingPage({ isDark, onToggleTheme }) {
+function LandingPage({
+  isDark,
+  onToggleTheme,
+  selectedPensum,
+  onSelectPensum,
+  pensumOptions,
+}) {
   const panelTone = isDark
     ? "border-slate-700 bg-slate-900/70 text-slate-100"
     : "border-slate-200 bg-white/85 text-slate-900";
@@ -24,14 +31,22 @@ function LandingPage({ isDark, onToggleTheme }) {
           <div className="flex items-center gap-3">
             <div
               className={`flex h-11 w-11 items-center justify-center rounded-xl ${
-                isDark ? "bg-sky-500/20 text-sky-300" : "bg-sky-100 text-sky-700"
+                isDark
+                  ? "bg-sky-500/20 text-sky-300"
+                  : "bg-sky-100 text-sky-700"
               }`}
             >
               <GraduationCap className="h-5 w-5" />
             </div>
             <div>
-              <p className={`text-sm font-bold ${isDark ? "text-slate-100" : "text-slate-900"}`}>Mi Pensum</p>
-              <p className={`text-xs ${mutedText}`}>Planifica tu ruta academica</p>
+              <p
+                className={`text-sm font-bold ${isDark ? "text-slate-100" : "text-slate-900"}`}
+              >
+                Mi Pensum
+              </p>
+              <p className={`text-xs ${mutedText}`}>
+                Planifica tu ruta academica
+              </p>
             </div>
           </div>
 
@@ -46,16 +61,24 @@ function LandingPage({ isDark, onToggleTheme }) {
             aria-label={isDark ? "Activar modo claro" : "Activar modo oscuro"}
             title={isDark ? "Modo claro" : "Modo oscuro"}
           >
-            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            {isDark ? (
+              <Sun className="h-4 w-4" />
+            ) : (
+              <Moon className="h-4 w-4" />
+            )}
           </button>
         </header>
 
-        <section className={`rounded-3xl border p-8 shadow-sm backdrop-blur md:p-12 ${panelTone}`}>
+        <section
+          className={`rounded-3xl border p-8 shadow-sm backdrop-blur md:p-12 ${panelTone}`}
+        >
           <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
             <div className="space-y-5">
               <span
                 className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${
-                  isDark ? "bg-sky-500/20 text-sky-200" : "bg-sky-100 text-sky-700"
+                  isDark
+                    ? "bg-sky-500/20 text-sky-200"
+                    : "bg-sky-100 text-sky-700"
                 }`}
               >
                 <Sparkles className="h-3.5 w-3.5" />
@@ -71,35 +94,66 @@ function LandingPage({ isDark, onToggleTheme }) {
               </h1>
 
               <p className={`max-w-xl text-sm md:text-base ${mutedText}`}>
-                Marca materias aprobadas, monitorea tus creditos y visualiza tu progreso semestre a semestre
-                en una interfaz clara y moderna.
+                Marca materias aprobadas, monitorea tus creditos y visualiza tu
+                progreso semestre a semestre en una interfaz clara y moderna.
               </p>
 
-              <div className="flex flex-wrap items-center gap-3 pt-2">
-                <Link
-                  to="/dashboard"
-                  className="inline-flex items-center gap-2 rounded-xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-500"
-                >
-                  Entrar al panel
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
+              <div className="w-full max-w-3xl space-y-3 pt-2">
+                <div>
+                  <label
+                    className={`mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider ${mutedText}`}
+                  >
+                    <BookOpen className="h-3.5 w-3.5" />
+                    Pensum a visualizar
+                  </label>
+                  <select
+                    value={selectedPensum}
+                    onChange={(event) => onSelectPensum(event.target.value)}
+                    className={`w-full rounded-xl border px-4 py-3 text-sm font-semibold outline-none transition ${
+                      isDark
+                        ? "border-slate-600 bg-slate-800 text-slate-100 focus:border-sky-400"
+                        : "border-slate-300 bg-white text-slate-800 focus:border-sky-400"
+                    }`}
+                  >
+                    {pensumOptions.map((option) => (
+                      <option key={option.key} value={option.url}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <p
+                    className={`mt-3 inline-flex items-center gap-2 text-sm font-medium ${mutedText}`}
+                  >
+                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                    Sin configuraciones complicadas
+                  </p>
+                </div>
 
-                <span className={`inline-flex items-center gap-2 text-xs font-medium ${mutedText}`}>
-                  <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                  Sin configuraciones complicadas
-                </span>
+                <div className="flex w-full flex-col gap-3 xl:flex-row xl:items-end">
+                  <Link
+                    to="/dashboard"
+                    className="inline-flex h-12 w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-sky-600 px-6 text-base font-semibold text-white transition hover:bg-sky-500 xl:w-auto"
+                  >
+                    Entrar al panel
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
               </div>
             </div>
 
             <div
               className={`rounded-2xl border p-6 ${
-                isDark ? "border-slate-700 bg-slate-950/50" : "border-slate-200 bg-white/90"
+                isDark
+                  ? "border-slate-700 bg-slate-950/50"
+                  : "border-slate-200 bg-white/90"
               }`}
             >
               <div className="space-y-4">
                 <div
                   className={`rounded-xl border p-4 ${
-                    isDark ? "border-slate-700 bg-slate-900" : "border-slate-200 bg-slate-50"
+                    isDark
+                      ? "border-slate-700 bg-slate-900"
+                      : "border-slate-200 bg-slate-50"
                   }`}
                 >
                   <div className="mb-2 flex items-center gap-2">
@@ -113,15 +167,20 @@ function LandingPage({ isDark, onToggleTheme }) {
 
                 <div
                   className={`rounded-xl border p-4 ${
-                    isDark ? "border-slate-700 bg-slate-900" : "border-slate-200 bg-slate-50"
+                    isDark
+                      ? "border-slate-700 bg-slate-900"
+                      : "border-slate-200 bg-slate-50"
                   }`}
                 >
                   <div className="mb-2 flex items-center gap-2">
                     <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                    <p className="text-sm font-semibold">Progreso persistente</p>
+                    <p className="text-sm font-semibold">
+                      Progreso persistente
+                    </p>
                   </div>
                   <p className={`text-xs ${mutedText}`}>
-                    Tu avance se guarda automaticamente para continuar cuando quieras.
+                    Tu avance se guarda automaticamente para continuar cuando
+                    quieras.
                   </p>
                 </div>
               </div>
