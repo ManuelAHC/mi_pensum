@@ -35,6 +35,7 @@ function App() {
   const [savedState, setSavedState] = useState(loadSavedState);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(savedState));
@@ -125,57 +126,85 @@ function App() {
     }));
   };
 
+  const scrollToElement = (elementId) => {
+    const element = document.getElementById(elementId);
+    element?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const handleNavigatePensum = () => {
+    scrollToElement("pensum-section");
+  };
+
+  const handleNavigateProgress = () => {
+    const isDesktop = window.innerWidth >= 1024;
+    scrollToElement(isDesktop ? "progress-desktop" : "progress-mobile");
+  };
+
   return (
     <div className="min-h-screen bg-blue-300">
-      <div className="flex min-h-screen flex-col">
-        <Header />
+      <div className="flex min-h-screen">
+        <Header
+          isCollapsed={isSidebarCollapsed}
+          onToggleCollapse={() => setIsSidebarCollapsed((prev) => !prev)}
+          onNavigatePensum={handleNavigatePensum}
+          onNavigateProgress={handleNavigateProgress}
+        />
 
-        <div className="flex flex-1 items-start justify-center gap-8 px-4 py-6 md:px-10">
-          <main className="w-full max-w-3xl">
-            <PensumSelectorCard
-              className="mb-6 lg:hidden"
-              value={selectedPensum}
-              options={PENSUM_OPTIONS}
-              onChange={setSelectedPensum}
-            />
-            <ProgressCard className="mb-6 lg:hidden" totals={totals} />
+        <div className="flex min-w-0 flex-1 flex-col lg:px-4">
+          <header className="flex items-center gap-3 bg-white px-4 py-4 shadow-md lg:hidden">
+            <div className="h-8 w-8 rounded-full bg-blue-500" />
+            <h1 className="text-lg font-bold text-gray-800">Mi Pensum</h1>
+          </header>
 
-            <h2 className="mb-4 text-2xl font-bold text-gray-800">Pensum Academico</h2>
-
-            {isLoading && <p className="rounded-lg bg-white p-4 shadow">Cargando pensum...</p>}
-            {!isLoading && error && (
-              <p className="rounded-lg bg-red-100 p-4 text-red-700 shadow">{error}</p>
-            )}
-
-            {!isLoading && !error && (
-              <div className="space-y-4">
-                {pensumData.map((semester) => {
-                  const isExpanded = expandedSemesters[semester.semestre] ?? true;
-
-                  return (
-                    <SemesterSection
-                      key={semester.semestre}
-                      semester={semester}
-                      isExpanded={isExpanded}
-                      selectedPensum={selectedPensum}
-                      savedState={savedState}
-                      onToggleSemester={handleToggleSemester}
-                      onToggleSubject={handleToggleSubject}
-                    />
-                  );
-                })}
+          <div className="flex flex-1 items-start justify-center gap-8 px-4 py-6 md:px-8">
+            <main id="pensum-section" className="w-full max-w-3xl scroll-mt-4">
+              <div id="progress-mobile" className="scroll-mt-4">
+                <PensumSelectorCard
+                  className="mb-6 lg:hidden"
+                  value={selectedPensum}
+                  options={PENSUM_OPTIONS}
+                  onChange={setSelectedPensum}
+                />
+                <ProgressCard className="mb-6 lg:hidden" totals={totals} />
               </div>
-            )}
-          </main>
 
-          <div className="sticky top-4 hidden flex-col gap-4 lg:flex">
-            <PensumSelectorCard
-              className="w-80"
-              value={selectedPensum}
-              options={PENSUM_OPTIONS}
-              onChange={setSelectedPensum}
-            />
-            <ProgressCard className="w-80" totals={totals} />
+              <h2 className="mb-4 text-2xl font-bold text-gray-800">Pensum Academico</h2>
+
+              {isLoading && <p className="rounded-lg bg-white p-4 shadow">Cargando pensum...</p>}
+              {!isLoading && error && (
+                <p className="rounded-lg bg-red-100 p-4 text-red-700 shadow">{error}</p>
+              )}
+
+              {!isLoading && !error && (
+                <div className="space-y-4">
+                  {pensumData.map((semester) => {
+                    const isExpanded = expandedSemesters[semester.semestre] ?? true;
+
+                    return (
+                      <SemesterSection
+                        key={semester.semestre}
+                        semester={semester}
+                        isExpanded={isExpanded}
+                        selectedPensum={selectedPensum}
+                        savedState={savedState}
+                        onToggleSemester={handleToggleSemester}
+                        onToggleSubject={handleToggleSubject}
+                      />
+                    );
+                  })}
+                </div>
+              )}
+            </main>
+
+            <div id="progress-desktop" className="sticky top-4 hidden scroll-mt-4 flex-col gap-4 lg:flex">
+              <PensumSelectorCard
+                className="w-80"
+                value={selectedPensum}
+                options={PENSUM_OPTIONS}
+                onChange={setSelectedPensum}
+              />
+              <ProgressCard className="w-80" totals={totals} />
+            </div>
           </div>
         </div>
       </div>
