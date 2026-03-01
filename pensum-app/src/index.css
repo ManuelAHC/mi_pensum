@@ -19,4 +19,14 @@ body,
 body {
   background: radial-gradient(circle at top, #dbeafe 0%, #f8fafc 45%, #eef2ff 100%);
   color: #0f172a;
+  transition: background-color 220ms ease, color 220ms ease;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background: radial-gradient(circle at top, #0b1220 0%, #111827 45%, #020617 100%);
+  color: #e2e8f0;
 }

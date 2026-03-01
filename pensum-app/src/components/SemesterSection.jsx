@@ -5,19 +5,46 @@ function SemesterSection({
   savedState,
   onToggleSemester,
   onToggleSubject,
+  isDark = false,
 }) {
   return (
-    <section className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white/90 shadow-sm backdrop-blur">
+    <section
+      className={`overflow-hidden rounded-2xl border shadow-sm backdrop-blur ${
+        isDark ? "border-slate-700 bg-slate-900/70" : "border-slate-200/80 bg-white/90"
+      }`}
+    >
       <button
         type="button"
         onClick={() => onToggleSemester(semester.semestre)}
-        className="flex w-full items-center justify-between bg-slate-50/80 px-5 py-4 text-left transition hover:bg-slate-100"
+        className={`flex w-full items-center justify-between px-5 py-4 text-left transition ${
+          isDark ? "bg-slate-800/70 hover:bg-slate-800" : "bg-slate-50/80 hover:bg-slate-100"
+        }`}
       >
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Bloque academico</p>
-          <span className="text-lg font-bold text-slate-900">Semestre {semester.semestre}</span>
+        <div className="flex items-center gap-2">
+          <svg
+            className={`h-4 w-4 ${isDark ? "text-sky-300" : "text-sky-600"}`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M12 2l4 7h-8l4-7z" />
+            <path d="M5 10h14v10H5z" />
+          </svg>
+          <div>
+            <p className={`text-xs font-semibold uppercase tracking-wider ${isDark ? "text-slate-400" : "text-slate-500"}`}>
+              Bloque academico
+            </p>
+            <span className={`text-lg font-bold ${isDark ? "text-slate-100" : "text-slate-900"}`}>
+              Semestre {semester.semestre}
+            </span>
+          </div>
         </div>
-        <span className="rounded-md border border-slate-200 bg-white px-2 py-1 text-sm font-bold text-sky-600">
+        <span
+          className={`rounded-md border px-2 py-1 text-sm font-bold ${
+            isDark ? "border-slate-600 bg-slate-900 text-sky-300" : "border-slate-200 bg-white text-sky-600"
+          }`}
+        >
           {isExpanded ? "-" : "+"}
         </span>
       </button>
@@ -32,18 +59,24 @@ function SemesterSection({
                 key={subject.codigo}
                 className={`flex items-center justify-between gap-3 rounded-xl border px-4 py-3 transition ${
                   isCompleted
-                    ? "border-emerald-200 bg-emerald-50"
+                    ? isDark
+                      ? "border-emerald-500/40 bg-emerald-500/10"
+                      : "border-emerald-200 bg-emerald-50"
+                    : isDark
+                    ? "border-slate-700 bg-slate-900 hover:border-slate-600"
                     : "border-slate-200 bg-white hover:border-slate-300"
                 }`}
               >
                 <div className="min-w-0">
-                  <p className="truncate font-semibold text-slate-900">{subject.nombre}</p>
-                  <p className="text-xs text-slate-500">
+                  <p className={`truncate font-semibold ${isDark ? "text-slate-100" : "text-slate-900"}`}>
+                    {subject.nombre}
+                  </p>
+                  <p className={`text-xs ${isDark ? "text-slate-400" : "text-slate-500"}`}>
                     {subject.codigo} · {subject.cr} creditos
                   </p>
                 </div>
 
-                <label className="flex shrink-0 items-center gap-2 text-xs font-medium text-slate-600">
+                <label className={`flex shrink-0 items-center gap-2 text-xs font-medium ${isDark ? "text-slate-300" : "text-slate-600"}`}>
                   <input
                     type="checkbox"
                     checked={isCompleted}
