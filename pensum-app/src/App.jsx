@@ -1,4 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import Header from "./components/Header";
+import PensumSelectorCard from "./components/PensumSelectorCard";
+import ProgressCard from "./components/ProgressCard";
+import SemesterSection from "./components/SemesterSection";
 
 const PENSUM_OPTIONS = [
   {
@@ -121,53 +125,20 @@ function App() {
     }));
   };
 
-  const renderProgressCard = (extraClassName = "") => (
-    <aside className={`w-full rounded-lg bg-white p-6 shadow-lg ${extraClassName}`.trim()}>
-      <h3 className="mb-4 text-lg font-bold text-gray-800">Tu progreso</h3>
-      <p className="text-2xl font-bold text-blue-600">{Math.round(totals.percentage)}%</p>
-      <div className="mt-2 h-4 w-full rounded-full bg-gray-200">
-        <div
-          className="h-4 rounded-full bg-blue-600 transition-all"
-          style={{ width: `${totals.percentage}%` }}
-        />
-      </div>
-      <p className="mt-4 text-gray-600">
-        {totals.completedCredits} de {totals.totalCredits} creditos completados
-      </p>
-    </aside>
-  );
-
-  const renderPensumCard = (extraClassName = "") => (
-    <aside className={`w-full rounded-lg bg-white p-6 shadow-lg ${extraClassName}`.trim()}>
-      <h3 className="mb-4 text-lg font-bold text-gray-800">Selecciona un Pensum</h3>
-      <select
-        value={selectedPensum}
-        onChange={(event) => setSelectedPensum(event.target.value)}
-        className="w-full rounded border border-gray-300 p-2"
-      >
-        {PENSUM_OPTIONS.map((option) => (
-          <option key={option.key} value={option.url}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </aside>
-  );
-
   return (
     <div className="min-h-screen bg-blue-300">
       <div className="flex min-h-screen flex-col">
-        <header className="flex items-center justify-between bg-white px-6 py-4 shadow-md md:px-10">
-          <div className="flex items-center gap-4">
-            <div className="h-8 w-8 rounded-full bg-blue-500" />
-            <h1 className="text-lg font-bold text-gray-800">Mi Pensum</h1>
-          </div>
-        </header>
+        <Header />
 
         <div className="flex flex-1 items-start justify-center gap-8 px-4 py-6 md:px-10">
           <main className="w-full max-w-3xl">
-            {renderPensumCard("mb-6 lg:hidden")}
-            {renderProgressCard("mb-6 lg:hidden")}
+            <PensumSelectorCard
+              className="mb-6 lg:hidden"
+              value={selectedPensum}
+              options={PENSUM_OPTIONS}
+              onChange={setSelectedPensum}
+            />
+            <ProgressCard className="mb-6 lg:hidden" totals={totals} />
 
             <h2 className="mb-4 text-2xl font-bold text-gray-800">Pensum Academico</h2>
 
@@ -182,46 +153,15 @@ function App() {
                   const isExpanded = expandedSemesters[semester.semestre] ?? true;
 
                   return (
-                    <section key={semester.semestre} className="rounded-lg bg-white p-4 shadow">
-                      <button
-                        type="button"
-                        onClick={() => handleToggleSemester(semester.semestre)}
-                        className="mb-4 flex w-full items-center justify-between text-left text-lg font-bold text-gray-800"
-                      >
-                        <span>Semestre {semester.semestre}</span>
-                        <span className="text-blue-500">{isExpanded ? "-" : "+"}</span>
-                      </button>
-
-                      {isExpanded && (
-                        <div className="space-y-3">
-                          {(semester.materias || []).map((subject) => {
-                            const isCompleted = !!savedState[`${selectedPensum}:${subject.codigo}`];
-
-                            return (
-                              <div
-                                key={subject.codigo}
-                                className={`flex items-center justify-between rounded-lg border p-4 ${
-                                  isCompleted ? "border-green-300 bg-green-100" : "border-gray-100 bg-white"
-                                }`}
-                              >
-                                <div>
-                                  <p className="font-medium text-gray-800">{subject.nombre}</p>
-                                  <p className="text-sm text-gray-600">
-                                    Codigo: {subject.codigo} | Creditos: {subject.cr}
-                                  </p>
-                                </div>
-                                <input
-                                  type="checkbox"
-                                  checked={isCompleted}
-                                  onChange={() => handleToggleSubject(subject.codigo)}
-                                  className="h-5 w-5 rounded border-gray-300 text-blue-500"
-                                />
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </section>
+                    <SemesterSection
+                      key={semester.semestre}
+                      semester={semester}
+                      isExpanded={isExpanded}
+                      selectedPensum={selectedPensum}
+                      savedState={savedState}
+                      onToggleSemester={handleToggleSemester}
+                      onToggleSubject={handleToggleSubject}
+                    />
                   );
                 })}
               </div>
@@ -229,8 +169,13 @@ function App() {
           </main>
 
           <div className="sticky top-4 hidden flex-col gap-4 lg:flex">
-            {renderPensumCard("w-80")}
-            {renderProgressCard("w-80")}
+            <PensumSelectorCard
+              className="w-80"
+              value={selectedPensum}
+              options={PENSUM_OPTIONS}
+              onChange={setSelectedPensum}
+            />
+            <ProgressCard className="w-80" totals={totals} />
           </div>
         </div>
       </div>
