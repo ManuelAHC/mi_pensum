@@ -1,4 +1,5 @@
-﻿import { useLayoutEffect, useRef, useState } from "react";
+﻿import { ChevronDown, Layers } from "lucide-react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 function SemesterSection({
   semester,
@@ -35,16 +36,7 @@ function SemesterSection({
         }`}
       >
         <div className="flex items-center gap-2">
-          <svg
-            className={`h-4 w-4 ${isDark ? "text-sky-300" : "text-sky-600"}`}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M12 2l4 7h-8l4-7z" />
-            <path d="M5 10h14v10H5z" />
-          </svg>
+          <Layers className={`h-4 w-4 ${isDark ? "text-sky-300" : "text-sky-600"}`} />
           <div>
             <p
               className={`text-xs font-semibold uppercase tracking-wider ${
@@ -59,11 +51,11 @@ function SemesterSection({
           </div>
         </div>
         <span
-          className={`rounded-md border px-2 py-1 text-sm font-bold ${
+          className={`rounded-md border p-1 text-sm font-bold transition-transform ${
             isDark ? "border-slate-600 bg-slate-900 text-sky-300" : "border-slate-200 bg-white text-sky-600"
-          }`}
+          } ${isExpanded ? "rotate-180" : "rotate-0"}`}
         >
-          {isExpanded ? "-" : "+"}
+          <ChevronDown className="h-4 w-4" />
         </span>
       </button>
 

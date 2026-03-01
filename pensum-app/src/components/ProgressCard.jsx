@@ -1,3 +1,5 @@
+﻿import { BarChart3 } from "lucide-react";
+
 function ProgressCard({ totals, className = "", isDark = false }) {
   return (
     <aside
@@ -6,16 +8,7 @@ function ProgressCard({ totals, className = "", isDark = false }) {
       }`.trim()}
     >
       <div className="mb-3 flex items-center gap-2">
-        <svg
-          className={`h-4 w-4 ${isDark ? "text-indigo-300" : "text-indigo-600"}`}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path d="M3 3v18h18" />
-          <path d="M7 14l4-4 3 3 5-6" />
-        </svg>
+        <BarChart3 className={`h-4 w-4 ${isDark ? "text-indigo-300" : "text-indigo-600"}`} />
         <p className={`text-xs font-semibold uppercase tracking-wider ${isDark ? "text-slate-400" : "text-slate-500"}`}>
           Rendimiento
         </p>

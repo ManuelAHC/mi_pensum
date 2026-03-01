@@ -1,3 +1,5 @@
+﻿import { BookOpen } from "lucide-react";
+
 function PensumSelectorCard({ value, options, onChange, className = "", isDark = false }) {
   return (
     <aside
@@ -6,16 +8,7 @@ function PensumSelectorCard({ value, options, onChange, className = "", isDark =
       }`.trim()}
     >
       <div className="mb-3 flex items-center gap-2">
-        <svg
-          className={`h-4 w-4 ${isDark ? "text-sky-300" : "text-sky-600"}`}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-          <path d="M6.5 2H20v15H6.5A2.5 2.5 0 0 0 4 19.5V4.5A2.5 2.5 0 0 1 6.5 2Z" />
-        </svg>
+        <BookOpen className={`h-4 w-4 ${isDark ? "text-sky-300" : "text-sky-600"}`} />
         <p className={`text-xs font-semibold uppercase tracking-wider ${isDark ? "text-slate-400" : "text-slate-500"}`}>
           Configuracion
         </p>
