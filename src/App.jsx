@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import LandingPage from "./components/LandingPage";
@@ -53,7 +53,8 @@ function DashboardPage({
   onToggleSemester,
   onToggleSubject,
   isSidebarCollapsed,
-  onToggleSidebar,
+  onSidebarMouseEnter,
+  onSidebarMouseLeave,
   onToggleTheme,
 }) {
   const scrollToElement = (elementId) => {
@@ -78,7 +79,8 @@ function DashboardPage({
         <Header
           isCollapsed={isSidebarCollapsed}
           isDark={isDark}
-          onToggleCollapse={onToggleSidebar}
+          onMouseEnter={onSidebarMouseEnter}
+          onMouseLeave={onSidebarMouseLeave}
           onToggleTheme={onToggleTheme}
           onNavigatePensum={handleNavigatePensum}
           onNavigateProgress={handleNavigateProgress}
@@ -239,7 +241,7 @@ function App() {
   const [savedState, setSavedState] = useState(loadSavedState);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
   const [theme, setTheme] = useState(getInitialTheme);
 
   const isDark = theme === "dark";
@@ -372,7 +374,8 @@ function App() {
             onToggleSemester={handleToggleSemester}
             onToggleSubject={handleToggleSubject}
             isSidebarCollapsed={isSidebarCollapsed}
-            onToggleSidebar={() => setIsSidebarCollapsed((prev) => !prev)}
+            onSidebarMouseEnter={() => setIsSidebarCollapsed(false)}
+            onSidebarMouseLeave={() => setIsSidebarCollapsed(true)}
             onToggleTheme={handleToggleTheme}
           />
         }

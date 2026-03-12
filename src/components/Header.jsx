@@ -1,9 +1,10 @@
-﻿import { BarChart3, BookOpen, ChevronLeft, ChevronRight, Moon, Sun } from "lucide-react";
+import { BarChart3, BookOpen, Moon, Sun } from "lucide-react";
 
 function Header({
   isCollapsed,
   isDark,
-  onToggleCollapse,
+  onMouseEnter,
+  onMouseLeave,
   onToggleTheme,
   onNavigatePensum,
   onNavigateProgress,
@@ -18,6 +19,8 @@ function Header({
 
   return (
     <aside
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       className={`sticky top-0 hidden h-screen flex-col border-r p-4 shadow-2xl transition-all lg:flex ${
         isCollapsed ? "w-20" : "w-72"
       } ${sidebarTone}`}
@@ -54,16 +57,6 @@ function Header({
             aria-label={isDark ? "Activar modo claro" : "Activar modo oscuro"}
           >
             {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </button>
-
-          <button
-            type="button"
-            onClick={onToggleCollapse}
-            className={`grid h-10 w-10 place-items-center rounded-lg border text-xs transition ${controlTone}`}
-            aria-label={isCollapsed ? "Expandir sidebar" : "Colapsar sidebar"}
-            title={isCollapsed ? "Expandir" : "Colapsar"}
-          >
-            {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
           </button>
         </div>
       </div>
